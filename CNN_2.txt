@@ -1,0 +1,40 @@
+import cv2
+import os
+import numpy as np
+
+count = -2
+train_labels = []
+train_images = []
+for root, dirs, files in os.walk("C://Users//HP//Documents//loginware//major_project//image_dataset"):
+    path = root.split(os.sep)
+    print((len(path) - 1) * '---', os.path.basename(root))        
+    count = count + 1
+   # for file in files:
+     #   print("C://Users//HP//Documents//loginware//major_project//database//+folders+")
+       # input_img= cv2.imread("C://Users//HP//Documents//loginware//major_project//database//"+'/'+file, 1)
+folders = ["Healthy","early_blight","late_blight"]
+dataset="C://Users//HP//Documents//loginware//major_project//image_dataset//"
+
+count = -2
+train_labels = []
+train_images = []
+for root, dirs, files in os.walk(dataset):
+    path = root.split(os.sep)
+    print((len(path) - 1) * '---', os.path.basename(root))        
+    count = count + 1
+    print(root,count)
+    for file in files:
+        input_img= cv2.imread(dataset+os.path.basename(root)+'/'+file, 1)
+        if input_img is not None:
+            img = cv2.resize(input_img, (60,60)).astype(np.float32)
+        else:
+            print("image not loaded")
+        
+        train_images.append(img)
+        train_labels.append(count)
+        print(len(path) * '---', file)
+
+print(len(train_images))
+print(len(train_labels))
+np.save('train_images_lenet.npy',np.array(train_images))
+np.save('train_labels_lenet.npy',np.array(train_labels))
